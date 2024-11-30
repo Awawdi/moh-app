@@ -97,9 +97,14 @@ resource "aws_instance" "main" {
   instance_type = "t2.micro"
   subnet_id     = aws_subnet.main.id
   vpc_security_group_ids = [aws_security_group.main.id] # Use vpc_security_group_ids instead
-
+  key_name = aws_key_pair.my_key.key_name
   tags = {
-    Name = "HelloWorldInstance"
+    Name = "MOHInstance"
+  }
+
+  root_block_device {
+    volume_type = "gp2"
+    volume_size = 8  # Size in GB
   }
 
   # Add a startup script to install Docker and run the container
