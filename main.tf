@@ -85,6 +85,13 @@ resource "aws_security_group" "main" {
   }
 }
 
+# Create a key pair for the EC2 instance
+resource "aws_key_pair" "my_key" {
+  key_name   = "moh-key-pair"
+  public_key = file("~/.ssh/id_rsa.pub")  # Use the path to your public key file
+}
+
+# Launch a new EC2 instance with the created key pair
 resource "aws_instance" "main" {
   ami           = "ami-0c02fb55956c7d316" # Amazon Linux 2 AMI
   instance_type = "t2.micro"

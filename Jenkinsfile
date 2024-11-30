@@ -36,13 +36,17 @@ pipeline {
             }
         }
 
-        stage('Deploy to EC2') {
-            steps {
-                script {
-                    // Add SSH command to deploy the Docker container to your EC2 instance
+    stage('Deploy to EC2') {
+        steps {
+            script {
+                sshagent(['ec2-ssh-key']) {
                     sh """
-                    ssh -i /path/to/your/aws/moh-kp.pem ec2-user@<EC2_PUBLIC_IP> <<EOF
+                    ssh -o StrictHostKeyChecking=no ec2-user@54.234.246.9 <<EOF
+                    sudo usermod -aG docker ec2-user
+                    newgrp docker
                     docker pull ${DOCKER_IMAGE}
+                    docker stop \$(docker ps -q --filter "ancestor=${DOCKER_IMAGE}") || true
+                    docker rm \$(docker ps -aq --filter "ancestor=${DOCKER_IMAGE}") || true
                     docker run -d -p 80:80 ${DOCKER_IMAGE}
                     EOF
                     """
