@@ -36,25 +36,25 @@ pipeline {
             }
         }
 
-    stage('Deploy to EC2') {
-        steps {
-            script {
-                sshagent(['ec2-ssh-key']) {
-                    sh """
-                    ssh -o StrictHostKeyChecking=no ec2-user@54.234.246.9 <<EOF
-                    sudo usermod -aG docker ec2-user
-                    newgrp docker
-                    docker pull ${DOCKER_IMAGE}
-                    docker stop \$(docker ps -q --filter "ancestor=${DOCKER_IMAGE}") || true
-                    docker rm \$(docker ps -aq --filter "ancestor=${DOCKER_IMAGE}") || true
-                    docker run -d -p 80:80 ${DOCKER_IMAGE}
-                    EOF
-                    """
+        stage('Deploy to EC2') {
+            steps {
+                script {
+                    sshagent(['ec2-ssh-key']) {
+                        sh """
+                        ssh -o StrictHostKeyChecking=no ec2-user@54.234.246.9 <<EOF
+                        sudo usermod -aG docker ec2-user
+                        newgrp docker
+                        docker pull ${DOCKER_IMAGE}
+                        docker stop \$(docker ps -q --filter "ancestor=${DOCKER_IMAGE}") || true
+                        docker rm \$(docker ps -aq --filter "ancestor=${DOCKER_IMAGE}") || true
+                        docker run -d -p 80:80 ${DOCKER_IMAGE}
+                        EOF
+                        """
+                    }
                 }
             }
         }
     }
-
     post {
         success {
             echo 'Pipeline completed successfully!'
