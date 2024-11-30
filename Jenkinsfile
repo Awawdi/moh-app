@@ -45,19 +45,21 @@ pipeline {
             steps {
                 script {
                     sshagent(credentials: ['ec2-ssh-key']) {
-                        sh """
-                        ssh -o StrictHostKeyChecking=no ec2-user@34.224.69.46 << EOF
-                        docker pull ${DOCKER_IMAGE}
+                        sh '''
+                        ssh -o StrictHostKeyChecking=no ec2-user@34.224.69.46
 
-                        # Stop any existing container running on port 80
-                        docker ps | grep ':80->' | awk '{print \$1}' | xargs -r docker stop || true
+                        echo Pulling Docker image: '"${DOCKER_IMAGE}"'
+                        docker pull '"${DOCKER_IMAGE}"'
 
-                        # Remove any existing container running on port 80
-                        docker ps -a | grep ':80->' | awk '{print \$1}' | xargs -r docker rm || true
+                        CONTAINER_ID=$(docker ps -q --filter publish=80)
+                        if [ ! -z "$CONTAINER_ID" ]; then
+                            docker stop $CONTAINER_ID
+                            docker rm $CONTAINER_ID
+                        fi
 
-                        docker run -d -p 80:80 ${DOCKER_IMAGE}
-                        EOF
-                        """
+                        docker run -d -p 80:80 '"${DOCKER_IMAGE}"'
+                        docker ps
+                        '''
                     }
                 }
             }
