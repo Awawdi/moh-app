@@ -44,21 +44,28 @@ pipeline {
         stage('Deploy to EC2') {
             steps {
                 script {
+                    // Print the Docker image name for verification
+                    echo "Deploying Docker image: ${DOCKER_IMAGE}"
+
                     sshagent(credentials: ['ec2-ssh-key']) {
                         sh '''
-                        ssh -o StrictHostKeyChecking=no ec2-user@34.224.69.46
+                            ssh -o StrictHostKeyChecking=no ec2-user@34.224.69.46 bash -c "
+                                set -x
 
-                        echo Pulling Docker image: '"${DOCKER_IMAGE}"'
-                        docker pull '"${DOCKER_IMAGE}"'
+                                echo \"Pulling Docker image: '"${DOCKER_IMAGE}"'\"
 
-                        CONTAINER_ID=$(docker ps -q --filter publish=80)
-                        if [ ! -z "$CONTAINER_ID" ]; then
-                            docker stop $CONTAINER_ID
-                            docker rm $CONTAINER_ID
-                        fi
+                                docker pull '"${DOCKER_IMAGE}"'
 
-                        docker run -d -p 80:80 '"${DOCKER_IMAGE}"'
-                        docker ps
+                                # Stop containers using port 80
+                                docker ps | grep ':80->' | awk '{print $1}' | xargs -r docker stop
+
+                                # Remove stopped containers using port 80
+                                docker ps -a | grep ':80->' | awk '{print $1}' | xargs -r docker rm
+
+                                docker run -d -p 80:5000 '"${DOCKER_IMAGE}"'
+
+                                docker ps
+                            "
                         '''
                     }
                 }
