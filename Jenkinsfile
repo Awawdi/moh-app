@@ -2,15 +2,15 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "orsanaw/moh-hello-world-app" // Set the Docker image name
+        DOCKER_IMAGE = "orsanaw/moh-hello-world-app" // Docker image name
         GITHUB_REPO = "https://github.com/Awawdi/moh-hello-world-app.git" // GitHub repository URL
-        DOCKER_REGISTRY = "docker.io" // Docker registry (DockerHub in this case)
+        DOCKER_REGISTRY = "docker.io" // Dockerhub registry
     }
 
     stages {
         stage('Checkout') {
             steps {
-                // Clone the GitHub repository
+                // Clone GitHub repository
                 git url: "${GITHUB_REPO}", branch: 'master'
             }
         }
@@ -30,7 +30,6 @@ pipeline {
                                                   usernameVariable: 'DOCKER_USERNAME',
                                                   passwordVariable: 'DOCKER_PASSWORD')]) {
                     script {
-                        // Login to DockerHub using credentials stored in Jenkins
                         sh """
                         docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}
                         docker push ${DOCKER_IMAGE}
@@ -44,7 +43,6 @@ pipeline {
         stage('Deploy to EC2') {
             steps {
                 script {
-                    // Print the Docker image name for verification
                     echo "Deploying Docker image: ${DOCKER_IMAGE}"
 
                     sshagent(credentials: ['ec2-ssh-key']) {

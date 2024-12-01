@@ -2,13 +2,13 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 5.0" # Use 5.x provider versions
+      version = "~> 5.0"
     }
   }
 }
 
 provider "aws" {
-  region = "us-east-1" # Replace with your preferred region
+  region = "us-east-1"
 }
 
 
@@ -27,7 +27,7 @@ resource "aws_subnet" "main" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = "10.0.1.0/24"
   map_public_ip_on_launch = true
-  availability_zone       = "us-east-1a" # Replace if using another region
+  availability_zone       = "us-east-1a"
   tags = {
     Name = "MainSubnet"
   }
@@ -88,15 +88,15 @@ resource "aws_security_group" "main" {
 # Create a key pair for the EC2 instance
 resource "aws_key_pair" "my_key" {
   key_name   = "moh-key-pair"
-  public_key = file("~/.ssh/id_rsa.pub")  # Use the path to your public key file
+  public_key = file("~/.ssh/id_rsa.pub")
 }
 
 # Launch a new EC2 instance with the created key pair
 resource "aws_instance" "main" {
-  ami           = "ami-0c02fb55956c7d316" # Amazon Linux 2 AMI
+  ami           = "ami-0c02fb55956c7d316"
   instance_type = "t2.micro"
   subnet_id     = aws_subnet.main.id
-  vpc_security_group_ids = [aws_security_group.main.id] # Use vpc_security_group_ids instead
+  vpc_security_group_ids = [aws_security_group.main.id]
   key_name = aws_key_pair.my_key.key_name
   tags = {
     Name = "MOHInstance"
@@ -104,10 +104,10 @@ resource "aws_instance" "main" {
 
   root_block_device {
     volume_type = "gp2"
-    volume_size = 8  # Size in GB
+    volume_size = 8  #GB
   }
 
-  # Add a startup script to install Docker and run the container
+  # startup script to install Docker and run the container
   user_data = <<-EOF
             #!/bin/bash
             yum update -y
