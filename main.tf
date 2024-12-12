@@ -8,13 +8,13 @@ terraform {
 }
 
 provider "aws" {
-  region = "us-east-1"
+  region = var.aws_region
 }
 
 
 # Create a VPC
 resource "aws_vpc" "main" {
-  cidr_block           = "10.0.0.0/16"
+  cidr_block           = var.vpc_cidr_block
   enable_dns_support   = true
   enable_dns_hostnames = true
   tags = {
@@ -25,9 +25,9 @@ resource "aws_vpc" "main" {
 # Create a Subnet
 resource "aws_subnet" "main" {
   vpc_id                  = aws_vpc.main.id
-  cidr_block              = "10.0.1.0/24"
+  cidr_block              = var.subnet_cidr_block
   map_public_ip_on_launch = true
-  availability_zone       = "us-east-1a"
+  availability_zone       = var.availability_zone
   tags = {
     Name = "MainSubnet"
   }
@@ -88,13 +88,13 @@ resource "aws_security_group" "main" {
 # Create a key pair for the EC2 instance
 resource "aws_key_pair" "my_key" {
   key_name   = "moh-key-pair"
-  public_key = file("~/.ssh/id_rsa.pub")
+  public_key = file(var.public_key_file)
 }
 
 # Launch a new EC2 instance with the created key pair
 resource "aws_instance" "main" {
-  ami           = "ami-0c02fb55956c7d316"
-  instance_type = "t2.micro"
+  ami           = var.ami_id
+  instance_type = var.instance_type
   subnet_id     = aws_subnet.main.id
   vpc_security_group_ids = [aws_security_group.main.id]
   key_name = aws_key_pair.my_key.key_name
@@ -115,7 +115,7 @@ resource "aws_instance" "main" {
             sudo usermod -aG docker ec2-user
             systemctl start docker
             systemctl enable docker
-            docker run -d -p 80:5000 orsanaw/moh-hello-world-app
+            docker run -d -p 80:5000 ${var.docker_image}
             EOF
 
 }
