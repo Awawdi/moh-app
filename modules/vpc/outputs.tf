@@ -1,13 +1,11 @@
 output "vpc_id" {
-  value = aws_vpc.main.id
+  description = "The ID of the created VPC"
+  value       = aws_vpc.main.id
 }
 
 output "subnet_id" {
-  value = aws_subnet.main.id
-}
-
-output "instance_id" {
-  value = aws_instance.main.id
+  description = "The ID of the created Subnet"
+  value       = aws_subnet.main.id
 }
 
 output "instance_public_ip" {

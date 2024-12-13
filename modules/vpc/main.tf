@@ -1,7 +1,3 @@
-provider "aws" {
-  region = var.aws_region
-}
-
 resource "aws_vpc" "main" {
   cidr_block           = var.vpc_cidr_block
   enable_dns_support   = true
@@ -69,17 +65,12 @@ resource "aws_security_group" "main" {
   }
 }
 
-resource "aws_key_pair" "my_key" {
-  key_name   = "tf-vpc-kp"
-  public_key = file("/home/orsan/.ssh/tf-vpc-kp.pub")
-}
-
 resource "aws_instance" "main" {
   ami           = var.ami_id
   instance_type = var.instance_type
   subnet_id     = aws_subnet.main.id
   vpc_security_group_ids = [aws_security_group.main.id]
-  key_name      = aws_key_pair.my_key.key_name
+  key_name      = "my-TF-KP"
   tags = {
     Name = "MOHInstance"
   }

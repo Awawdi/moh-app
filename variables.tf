@@ -1,43 +1,60 @@
 variable "aws_region" {
-  default = "us-east-1"
+  description = "AWS region for all resources"
+  default     = "us-east-1"
 }
 
-variable "vpc_cidr_block_1" {
-  default = "10.0.0.0/16"
+variable "vpc1_cidr_block" {
+  description = "CIDR block for VPC 1"
+  default     = "10.0.0.0/16"
 }
 
-variable "vpc_cidr_block_2" {
-  default = "10.0.1.0/16"
+variable "vpc2_cidr_block" {
+  description = "CIDR block for VPC 2"
+  default     = "10.1.0.0/16"
 }
 
-variable "subnet_cidr_block_1" {
-  default = "10.0.0.0/24"
+variable "vpc1_subnet_cidr_block" {
+  description = "CIDR block for Subnet in VPC 1"
+  default     = "10.0.1.0/24"
 }
 
-variable "subnet_cidr_block_2" {
-  default = "10.0.1.0/24"
+variable "vpc2_subnet_cidr_block" {
+  description = "CIDR block for Subnet in VPC 2"
+  default     = "10.1.1.0/24"
 }
 
-variable "availability_zone_1" {
-  default = "us-east-1a"
+variable "vpc1_availability_zone" {
+  description = "Availability Zone for Subnet in VPC 1"
+  default     = "us-east-1a"
 }
 
-variable "availability_zone_2" {
-  default = "us-east-1b"
+variable "vpc2_availability_zone" {
+  description = "Availability Zone for Subnet in VPC 2"
+  default     = "us-east-1b"
 }
 
 variable "ami_id" {
-  default = "ami-0c02fb55956c7d316"
+  description = "AMI ID for EC2 instances"
+  default     = "ami-0453ec754f44f9a4a"
 }
 
 variable "instance_type" {
-  default = "t2.micro"
+  description = "Instance type for EC2 instances"
+  default     = "t2.micro"
 }
 
 variable "public_key_file" {
-  default = "/home/orsan/.aws/new-key-pair.pub"
+  description = "Path to the public SSH key file"
+  default     = "~/.ssh/tf-key.pub"
 }
 
 variable "docker_image" {
-  default = "orsanaw/moh-hello-world-app"
+  description = "Docker image to run on the EC2 instances"
+  default     = "orsanaw/moh-hello-world-app:0.0.5"
+}
+
+variable "create_vpc2" {
+  description = "Whether to create VPC 2"
+  type        = bool
+  default     = false
 }

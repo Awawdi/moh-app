@@ -1,33 +1,29 @@
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.0"
-    }
-  }
-
-}
-
-module "vpc_1" {
+module "vpc1" {
   source             = "./modules/vpc"
   aws_region         = var.aws_region
-  vpc_cidr_block     = var.vpc_cidr_block_1
-  subnet_cidr_block  = var.subnet_cidr_block_1
-  availability_zone  = var.availability_zone_1
+  vpc_cidr_block     = var.vpc1_cidr_block
+  subnet_cidr_block  = var.vpc1_subnet_cidr_block
+  availability_zone  = var.vpc1_availability_zone
+  ami_id             = var.ami_id
+  instance_type      = var.instance_type
+  public_key_file    = data.aws_key_pair.existing_key.public_key
+  docker_image       = var.docker_image
+}
+
+module "vpc2" {
+  source             = "./modules/vpc"
+  aws_region         = var.aws_region
+  vpc_cidr_block     = var.vpc2_cidr_block
+  subnet_cidr_block  = var.vpc2_subnet_cidr_block
+  availability_zone  = var.vpc2_availability_zone
   ami_id             = var.ami_id
   instance_type      = var.instance_type
   public_key_file    = var.public_key_file
   docker_image       = var.docker_image
+
+  count = var.create_vpc2 ? 1 : 0
 }
 
-module "vpc_2" {
-  source             = "./modules/vpc"
-  aws_region         = var.aws_region
-  vpc_cidr_block     = var.vpc_cidr_block_2
-  subnet_cidr_block  = var.subnet_cidr_block_2
-  availability_zone  = var.availability_zone_2
-  ami_id             = var.ami_id
-  instance_type      = var.instance_type
-  public_key_file    = var.public_key_file
-  docker_image       = var.docker_image
+data "aws_key_pair" "existing_key" {
+  key_name = "tf-kp"
 }
