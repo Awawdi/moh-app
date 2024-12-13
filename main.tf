@@ -8,26 +8,26 @@ terraform {
 
 }
 
-module "east_vpc" {
+module "vpc_1" {
   source             = "./modules/vpc"
-  aws_region         = var.aws_region_east
-  vpc_cidr_block     = var.vpc_cidr_block_east
-  subnet_cidr_block  = var.subnet_cidr_block_east
-  availability_zone  = var.availability_zone_east
-  ami_id             = var.ami_id_east
-  instance_type      = var.instance_type_east
+  aws_region         = var.aws_region
+  vpc_cidr_block     = var.vpc_cidr_block_1
+  subnet_cidr_block  = var.subnet_cidr_block_1
+  availability_zone  = var.availability_zone_1
+  ami_id             = var.ami_id
+  instance_type      = var.instance_type
   public_key_file    = var.public_key_file
   docker_image       = var.docker_image
 }
 
-module "west_vpc" {
+module "vpc_2" {
   source             = "./modules/vpc"
-  aws_region         = var.aws_region_west
-  vpc_cidr_block     = var.vpc_cidr_block_west
-  subnet_cidr_block  = var.subnet_cidr_block_west
-  availability_zone  = var.availability_zone_west
-  ami_id             = var.ami_id_west
-  instance_type      = var.instance_type_west
+  aws_region         = var.aws_region
+  vpc_cidr_block     = var.vpc_cidr_block_2
+  subnet_cidr_block  = var.subnet_cidr_block_2
+  availability_zone  = var.availability_zone_2
+  ami_id             = var.ami_id
+  instance_type      = var.instance_type
   public_key_file    = var.public_key_file
   docker_image       = var.docker_image
 }
