@@ -7,7 +7,6 @@ module "vpc1" {
   ami_id             = var.ami_id
   instance_type      = var.instance_type
   public_key_file    = data.aws_key_pair.existing_key.public_key
-  docker_image       = var.docker_image
 }
 
 module "vpc2" {
@@ -19,7 +18,6 @@ module "vpc2" {
   ami_id             = var.ami_id
   instance_type      = var.instance_type
   public_key_file    = var.public_key_file
-  docker_image       = var.docker_image
 
   count = var.create_vpc2 ? 1 : 0
 }

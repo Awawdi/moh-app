@@ -41,7 +41,7 @@ resource "aws_route_table_association" "main" {
 }
 
 resource "aws_security_group" "main" {
-  vpc_id = aws_vpc.main.id
+  vpc_id =  aws_vpc.main.id
   ingress {
     from_port   = 22
     to_port     = 22
@@ -63,30 +63,4 @@ resource "aws_security_group" "main" {
   tags = {
     Name = "MainSecurityGroup"
   }
-}
-
-resource "aws_instance" "main" {
-  ami           = var.ami_id
-  instance_type = var.instance_type
-  subnet_id     = aws_subnet.main.id
-  vpc_security_group_ids = [aws_security_group.main.id]
-  key_name      = "my-TF-KP"
-  tags = {
-    Name = "MOHInstance"
-  }
-
-  root_block_device {
-    volume_type = "gp2"
-    volume_size = 8
-  }
-
-  user_data = <<-EOF
-              #!/bin/bash
-              yum update -y
-              yum install -y docker
-              sudo usermod -aG docker ec2-user
-              systemctl start docker
-              systemctl enable docker
-              docker run -d -p 80:5000 ${var.docker_image}
-              EOF
 }

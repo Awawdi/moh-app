@@ -32,8 +32,3 @@ variable "public_key_file" {
   description = "Path to the public SSH key file"
   type        = string
 }
-
-variable "docker_image" {
-  description = "Docker image to run on the EC2 instance"
-  type        = string
-}

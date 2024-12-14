@@ -40,7 +40,7 @@ variable "ami_id" {
 
 variable "instance_type" {
   description = "Instance type for EC2 instances"
-  default     = "t2.micro"
+  default     = "t3.small"
 }
 
 variable "public_key_file" {
@@ -48,9 +48,16 @@ variable "public_key_file" {
   default     = "~/.ssh/tf-key.pub"
 }
 
-variable "docker_image" {
+variable "docker_image_blue" {
   description = "Docker image to run on the EC2 instances"
-  default     = "orsanaw/moh-hello-world-app:0.0.5"
+  type        = string
+  default     = "orsanaw/moh-hello-world-app:blue"
+}
+
+variable "docker_image_green" {
+  description = "Docker image to run on the EC2 instances"
+  type        = string
+  default     = "orsanaw/moh-hello-world-app:green"
 }
 
 variable "create_vpc2" {
