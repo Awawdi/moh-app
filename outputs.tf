@@ -18,12 +18,13 @@ output "vpc2_subnet_id" {
   value       = var.create_vpc2 ? module.vpc2[0].subnet_id : null
 }
 
-output "green_instance_public_ip" {
-  description = "The public IP address of the EC2 instance"
-  value       = aws_instance.green_instance.public_ip
+output "blue_instance_public_ips" {
+  description = "Public IPs of the blue instances"
+  value       = flatten([for instance in module.blue_instance : instance.public_ips])
 }
 
-output "blue_instance_public_ip" {
-  description = "The public IP address of the EC2 instance"
-  value       = aws_instance.blue_instance.public_ip
+output "green_instance_public_ips" {
+  description = "Public IPs of the green instances"
+  value       = flatten([for instance in module.green_instance : instance.public_ips])
 }
+

@@ -33,35 +33,33 @@ variable "vpc2_availability_zone" {
   default     = "us-east-1b"
 }
 
-variable "ami_id" {
-  description = "AMI ID for EC2 instances"
-  default     = "ami-0453ec754f44f9a4a"
-}
-
-variable "instance_type" {
-  description = "Instance type for EC2 instances"
-  default     = "t3.small"
-}
-
-variable "public_key_file" {
-  description = "Path to the public SSH key file"
-  default     = "~/.ssh/tf-key.pub"
-}
-
-variable "docker_image_blue" {
-  description = "Docker image to run on the EC2 instances"
-  type        = string
-  default     = "orsanaw/moh-hello-world-app:blue"
-}
-
-variable "docker_image_green" {
-  description = "Docker image to run on the EC2 instances"
-  type        = string
-  default     = "orsanaw/moh-hello-world-app:green"
-}
-
 variable "create_vpc2" {
   description = "Whether to create VPC 2"
   type        = bool
   default     = false
 }
+
+variable "blue_instance_count" {
+  description = "Number of blue instances to create"
+  type        = number
+  default     = 1
+}
+
+variable "green_instance_count" {
+  description = "Number of blue instances to create"
+  type        = number
+  default     = 2
+}
+
+variable "blue_docker_image" {
+  description = "Docker image to run on the EC2 instances"
+  type        = string
+  default     = "orsanaw/moh-hello-world-app:blue"
+}
+
+variable "green_docker_image" {
+  description = "Docker image to run on the EC2 instances"
+  type        = string
+  default     = "orsanaw/moh-hello-world-app:green"
+}
+

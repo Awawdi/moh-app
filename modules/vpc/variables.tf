@@ -18,16 +18,6 @@ variable "availability_zone" {
   type        = string
 }
 
-variable "ami_id" {
-  description = "AMI ID for the EC2 instance"
-  type        = string
-}
-
-variable "instance_type" {
-  description = "Instance type for the EC2 instance"
-  type        = string
-}
-
 variable "public_key_file" {
   description = "Path to the public SSH key file"
   type        = string
