@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "orsanaw/moh-hello-world-app" // Docker image name
-        GITHUB_REPO = "https://github.com/Awawdi/moh-hello-world-app.git" // GitHub repository URL
+        DOCKER_IMAGE = "orsanaw/moh-app" // Docker image name
+        GITHUB_REPO = "https://github.com/Awawdi/moh-app.git" // GitHub repository URL
         DOCKER_REGISTRY = "docker.io" // Dockerhub registry
     }
 

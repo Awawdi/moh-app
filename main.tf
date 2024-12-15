@@ -42,3 +42,4 @@ module "green_instance" {
 data "aws_key_pair" "existing_key" {
   key_name = "tf-kp"
 }
+
