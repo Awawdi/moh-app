@@ -21,7 +21,6 @@ module "vpc2" {
 module "blue_instance" {
   source              = "./modules/ec2_instance"
   count               = var.blue_instance_count
-  instance_count      = 1
   subnet_id           = module.vpc1.subnet_id
   security_group_ids  = [module.vpc1.security_group_id]
   docker_image        = var.blue_docker_image
@@ -32,7 +31,6 @@ module "blue_instance" {
 module "green_instance" {
   source              = "./modules/ec2_instance"
   count               = var.green_instance_count
-  instance_count      = 1
   subnet_id           = module.vpc1.subnet_id
   security_group_ids  = [module.vpc1.security_group_id]
   docker_image        = var.green_docker_image

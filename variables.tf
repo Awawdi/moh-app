@@ -42,7 +42,7 @@ variable "create_vpc2" {
 variable "blue_instance_count" {
   description = "Number of blue instances to create"
   type        = number
-  default     = 1
+  default     = 3
 }
 
 variable "green_instance_count" {
